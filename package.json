@@ -1,5 +1,5 @@
 {
-  "name": "testjsonbitly",
+  "name": "shorturl",
   "version": "0.0.1",
   "description": "Test program writted on NodeJS",
   "main": "app.js",
@@ -13,5 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "sqlite3": "^5.1.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanilCrazy99/shortURL.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DanilCrazy99/shortURL/issues"
+  },
+  "homepage": "https://github.com/DanilCrazy99/shortURL#readme"
 }
