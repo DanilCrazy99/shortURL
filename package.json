@@ -1,0 +1,17 @@
+{
+  "name": "testjsonbitly",
+  "version": "0.0.1",
+  "description": "Test program writted on NodeJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "JavaScript"
+  ],
+  "author": "Danil Volkov (volchara287@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "sqlite3": "^5.1.2"
+  }
+}
