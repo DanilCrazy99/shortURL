@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3').verbose();
-exports = MyDataBase
 
 const MyDataBase = {
 
@@ -51,3 +50,5 @@ const MyDataBase = {
         return row.user
     }
 }
+
+module.exports = MyDataBase;
