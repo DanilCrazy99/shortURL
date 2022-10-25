@@ -6,6 +6,7 @@ const ShortUrl = require('./shortUrl.js')
 
 
 MyDataBase.CreateTableDB()
+
 http.createServer((request, response) => {
     let urlRequest = url.parse(request.url, true);
     let ourUrl = urlRequest.query;

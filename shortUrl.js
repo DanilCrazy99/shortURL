@@ -6,7 +6,6 @@ const lengthUrl = randomSymbols['param']['lengthUrl']
 const ShortUrl = {
 
     checkValidate() {    // Проверка валидности ссылки
-
     },
 
     create() {   // создание ссылки и сохранение в базе данных
