@@ -5,19 +5,34 @@ const MyDataBase = require('./database.js');
 const myCookies = require('./createCookies.js');
 const ShortUrl = require('./shortUrl.js')
 
+
+
 // app.get('/', (req, res) => {
 //     res.json({ user: 'tobi' })
 // })
 
+// console.log();
+
+
 app.get('/short-url', (req, res) => {
-    console.log(res.query)
+    
+    if (!req.headers.cookie) {
+        res.cookie('ShortUrlStorage', myCookies.create())
+    }
+    console.log('cookie: ', req.headers.cookie);
     if(req.query['url']){
-        console.log(req.query);
+        let moduleDB = new MyDataBase
+        moduleDB.CreateTableDB();
+        console.log('query: ', req.query);
+        const valueShortUrl = ShortUrl.create()
+        moduleDB.InsertUserData(req.headers.cookie, req.query['url'], valueShortUrl)
         return res.status(201).json({ 
             url: req.query['url'],
-            'shortUrl': ShortUrl.create()
+            'shortUrl': valueShortUrl
     }) 
+
     }
+    console.log(404);
     return res.status(404).json({msg:'error'})
     
     

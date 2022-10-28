@@ -1,27 +1,28 @@
 const sqlite3 = require('sqlite3').verbose();
 
-const MyDataBase = {
+class MyDataBase {
 
-    db: new sqlite3.Database("./usersData.db", (err) => {
+    db = new sqlite3.Database("./usersData.db", sqlite3.OPEN_READWRITE, (err) => {
         if (err) return console.error(err.message);
         console.log('Connection succesful');
-    }),
+    })
 
     CreateTableDB() {   //  создание таблицы для хранения данных
         this.db.run("CREATE TABLE IF NOT EXISTS usersURLs (user TEXT, url TEXT, short TEXT UNIQUE)", (err) => {
             if (err) console.log("CreateTableDB:" + err);
         });
-        this.db.close();
-    },
+        console.log('Таблицы работают');
+        // this.db.close();
+    }
 
-    InsertUserData(userCookie, url) {   //  добавить данные о пользователе, его ссылку и новую ссылку
+    InsertUserData(userCookie, url, createdShortUrl) {   //  добавить данные о пользователе, его ссылку и новую ссылку
         const stmt = "INSERT INTO usersURLs VALUES (?, ?, ?)";
-        this.db.run(stmt, [userCookie, url, ShortUrl.create()], (err) => {
+        this.db.run(stmt, [userCookie, url, createdShortUrl], (err) => {
             if (err) return console.error("InsertUserData:" + err.message);
-            else console.log("Items Inserted");
+            else console.log(`Items Inserted: ${userCookie}, ${url}, ${createdShortUrl}}`);
             this.db.close();
         });
-    },
+    }
 
     getUrlsThisUser(userCookie) {   //  получить urlы данного пользователя
         this.db.each("SELECT * FROM usersURLs WHERE user = " + userCookie + ";", (err, row) => {
@@ -30,16 +31,17 @@ const MyDataBase = {
         });
         this.db.close();
         return row.url, row.short
-    },
+    }
 
     getAllUrls() {
-        this.db.each("SELECT * FROM usersURLs", (err, row) => {
+        const dbReq = "SELECT * FROM usersURLs"
+        this.db.all(dbReq, [], (err, row) => {
             if (err) return console.error("getAllUrls:" + err.message);
             console.log(row.user + ": " + row.url);
+            return row.forEach(row)
         });
         this.db.close();
-        return row.url
-    },
+    }
 
     getAllCookies() {
         this.db.each("SELECT * FROM usersURLs", (err, row) => {
@@ -48,7 +50,7 @@ const MyDataBase = {
         });
         this.db.close();
         return row.user
-    },
+    }
     findUserWithCookie() {
         this.db.each("SELECT * FROM usersURLs", (err, row) => {
             if (err) return console.error("findUserWithCookie:" + err.message);
