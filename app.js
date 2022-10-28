@@ -1,56 +1,30 @@
-const http = require('http');
-const url = require('url');
+const express = require('express');
+const app = express();
+const port = 3000;
 const MyDataBase = require('./database.js');
 const myCookies = require('./createCookies.js');
 const ShortUrl = require('./shortUrl.js')
 
+// app.get('/', (req, res) => {
+//     res.json({ user: 'tobi' })
+// })
 
-MyDataBase.CreateTableDB()
-
-http.createServer((request, response) => {
-    let urlRequest = url.parse(request.url, true);
-    let ourUrl = urlRequest.query;
-    // console.log(urlRequest);    // URL ответ
-    console.log(ourUrl);
-    console.log(Object.keys(ourUrl));
-    // console.log(urlRequest);
-
-        
-    if (request.url == "/favicon.ico") { 
-        if (!request.headers.cookie) {
-
-            response.writeHead(200, {
-                'Set-Cookie': myCookies.create(),
-                'Content-Type': 'text/plain'
-            });
-        }
-        response.end('Hello favicon'); 
+app.get('/short-url', (req, res) => {
+    console.log(res.query)
+    if(req.query['url']){
+        console.log(req.query);
+        return res.status(201).json({ 
+            url: req.query['url'],
+            'shortUrl': ShortUrl.create()
+    }) 
     }
-    // console.log(request.url);    // GET
-    if (!request.headers.cookie) {
-
-        response.writeHead(200, {
-            'Set-Cookie': myCookies.create(),
-            'Content-Type': 'text/plain'
-        });
-    }
-
-    if (request.url != '/favicon.ico') {
-        console.log("Cookie: " + request.headers.cookie);
-    };
-
-    response.end(request.headers.host + "/?" + ShortUrl.create());   // вывод ответа на сайт
+    return res.status(404).json({msg:'error'})
     
+    
+})
 
 
-    if (!request.headers.cookie) {
-        response.writeHead(200, {
-            'Set-Cookie': myCookies.create(),
-            'Content-Type': 'text/html'
-        });
-    }
-    response.end('hello')
-
-
-}).listen(3000) // порт сервера
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+})
 console.log('Server UP');

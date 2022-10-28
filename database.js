@@ -23,13 +23,13 @@ const MyDataBase = {
         });
     },
 
-    getUrlsThisUser(userCookie) {
+    getUrlsThisUser(userCookie) {   //  получить urlы данного пользователя
         this.db.each("SELECT * FROM usersURLs WHERE user = " + userCookie + ";", (err, row) => {
             if (err) return console.error("getUrlsThisUser:" + err.message);
-            else console.log(row.user + ": " + row.url);
+            else console.log(row.user + ": " + row.url + ": " + row.short);
         });
         this.db.close();
-        return row.url
+        return row.url, row.short
     },
 
     getAllUrls() {
@@ -48,6 +48,14 @@ const MyDataBase = {
         });
         this.db.close();
         return row.user
+    },
+    findUserWithCookie() {
+        this.db.each("SELECT * FROM usersURLs", (err, row) => {
+            if (err) return console.error("findUserWithCookie:" + err.message);
+            console.log(row.user + ": " + row.url);
+        });
+        this.db.close();
+        return console.log(typeof row.user); 
     }
 }
 
